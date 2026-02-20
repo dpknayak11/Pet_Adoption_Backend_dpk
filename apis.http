@@ -1,0 +1,577 @@
+### Pet Adoption Management System - Complete API Collection
+### This file can be used with VS Code REST Client extension
+### Install: ext install humao.rest-client
+
+### ============================================
+### ENVIRONMENT VARIABLES
+### ============================================
+
+@baseUrl = http://localhost:5000/api
+@adminToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YzlhMzQ1ZjdkYjQ1MDAxMjM0NTY3OCIsInJvbGUiOiJhZG1pbiJ9.xxx
+@userToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YzlhMzQ1ZjdkYjQ1MDAxMjM0NTY3OSIsInJvbGUiOiJ1c2VyIn0.xxx
+@petId = 64c9a345f7db450012345670
+@applicationId = 64c9a345f7db450012345671
+
+
+### ============================================
+### AUTHENTICATION ENDPOINTS
+### ============================================
+
+### 1. USER REGISTRATION - New User
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "phone": "5551234567",
+  "password": "securePassword123"
+}
+
+### 2. USER REGISTRATION - Admin User (if allowed during setup)
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "Admin User",
+  "email": "admin@example.com",
+  "phone": "5559876543",
+  "password": "adminPassword123",
+  "role": "admin"
+}
+
+### 3. USER LOGIN - Regular User
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "john@example.com",
+  "password": "securePassword123"
+}
+
+### 4. USER LOGIN - Admin User
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "adminPassword123"
+}
+
+### 5. GET USER PROFILE - Authenticated User
+GET {{baseUrl}}/auth/profile
+Authorization: {{userToken}}
+
+### 6. GET USER PROFILE - Admin User
+GET {{baseUrl}}/auth/profile
+Authorization: {{adminToken}}
+
+
+### ============================================
+### PETS ENDPOINTS - PUBLIC ACCESS
+### ============================================
+
+### 7. GET ALL PETS - No Pagination
+GET {{baseUrl}}/pets
+
+### 8. GET ALL PETS - With Pagination
+GET {{baseUrl}}/pets?page=1&limit=12
+
+### 9. GET ALL PETS - With Search
+GET {{baseUrl}}/pets?search=Max
+
+### 10. GET ALL PETS - Filter by Species
+GET {{baseUrl}}/pets?species=Dog
+
+### 11. GET ALL PETS - Combined Filters
+GET {{baseUrl}}/pets?page=1&search=Max&species=Dog&limit=12
+
+### 12. GET SINGLE PET BY ID
+GET {{baseUrl}}/pets/{{petId}}
+
+### 13. GET SINGLE PET - Different Pet
+GET {{baseUrl}}/pets/64c9a345f7db450012345672
+
+
+### ============================================
+### PETS ENDPOINTS - ADMIN ONLY
+### ============================================
+
+### 14. ADD NEW PET - Dog
+POST {{baseUrl}}/pets
+Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+  "name": "Max",
+  "species": "Dog",
+  "breed": "Golden Retriever",
+  "age": 3,
+  "gender": "Male",
+  "weight": 32,
+  "color": "Golden",
+  "image": "https://images.example.com/max.jpg",
+  "description": "Friendly and energetic Golden Retriever looking for an active family",
+  "traits": ["Friendly", "Energetic", "Loyal", "Good with kids"],
+  "health_status": "Healthy",
+  "vaccinated": true,
+  "adopted": false
+}
+
+### 15. ADD NEW PET - Cat
+POST {{baseUrl}}/pets
+Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+  "name": "Whiskers",
+  "species": "Cat",
+  "breed": "Persian",
+  "age": 2,
+  "gender": "Female",
+  "weight": 4,
+  "color": "White",
+  "image": "https://images.example.com/whiskers.jpg",
+  "description": "Calm and affectionate Persian cat, perfect for apartment living",
+  "traits": ["Calm", "Affectionate", "Quiet", "Independent"],
+  "health_status": "Healthy",
+  "microchip": "MC987654321",
+  "vaccinated": true,
+  "adopted": false
+}
+
+### 16. ADD NEW PET - Rabbit
+POST {{baseUrl}}/pets
+Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+  "name": "Fluffy",
+  "species": "Rabbit",
+  "breed": "Holland Lop",
+  "age": 1,
+  "gender": "Male",
+  "weight": 2,
+  "color": "Brown and White",
+  "image": "https://images.example.com/fluffy.jpg",
+  "description": "Cute Holland Lop rabbit, very social and enjoys company",
+  "traits": ["Social", "Gentle", "Playful", "Curious"],
+  "health_status": "Healthy",
+  "microchip": "MC555666777",
+  "vaccinated": true,
+  "adopted": false
+}
+
+### 17. ADD NEW PET - Bird
+POST {{baseUrl}}/pets
+Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+  "name": "Tweety",
+  "species": "Bird",
+  "breed": "Budgie",
+  "age": 1,
+  "gender": "Female",
+  "weight": 0.05,
+  "color": "Blue and Yellow",
+  "image": "https://images.example.com/tweety.jpg",
+  "description": "Cheerful budgie, loves to sing and interact",
+  "traits": ["Vocal", "Social", "Playful", "Intelligent"],
+  "health_status": "Healthy",
+  "microchip": "MC111222333",
+  "vaccinated": false,
+  "adopted": false
+}
+
+### 18. UPDATE PET - Modify Pet Details
+PUT {{baseUrl}}/pets/{{petId}}
+Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+  "name": "Max Updated",
+  "age": 4,
+  "weight": 33,
+  "adopted": false,
+  "description": "Updated description - Very friendly and loves to play fetch"
+}
+
+### 19. UPDATE PET - Mark as Adopted
+PUT {{baseUrl}}/pets/{{petId}}
+Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+  "adopted": true
+}
+
+### 20. DELETE PET - Remove Pet from System
+DELETE {{baseUrl}}/pets/{{petId}}
+Authorization: {{adminToken}}
+
+
+### ============================================
+### ADOPTIONS ENDPOINTS - USER OPERATIONS
+### ============================================
+
+### 21. APPLY FOR ADOPTION - User Applies for Pet
+POST {{baseUrl}}/adoptions/apply
+Authorization: {{userToken}}
+Content-Type: application/json
+
+{
+  "petId": "{{petId}}"
+}
+
+### 22. APPLY FOR ADOPTION - Another Pet
+POST {{baseUrl}}/adoptions/apply
+Authorization: {{userToken}}
+Content-Type: application/json
+
+{
+  "petId": "64c9a345f7db450012345672"
+}
+
+### 23. GET MY APPLICATIONS - User Views Their Applications
+GET {{baseUrl}}/adoptions/my-applications
+Authorization: {{userToken}}
+
+
+### ============================================
+### ADOPTIONS ENDPOINTS - ADMIN OPERATIONS
+### ============================================
+
+### 24. GET ALL APPLICATIONS - Admin Views All Applications
+GET {{baseUrl}}/adoptions/all-applications
+Authorization: {{adminToken}}
+
+### 25. APPROVE APPLICATION - Admin Approves User's Application
+PUT {{baseUrl}}/adoptions/{{applicationId}}/status
+Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+  "status": "approved"
+}
+
+### 26. REJECT APPLICATION - Admin Rejects User's Application
+PUT {{baseUrl}}/adoptions/{{applicationId}}/status
+Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+  "status": "rejected"
+}
+
+### 27. UPDATE APPLICATION TO PENDING - Reset Status
+PUT {{baseUrl}}/adoptions/{{applicationId}}/status
+Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+  "status": "pending"
+}
+
+
+### ============================================
+### ERROR SCENARIOS - TESTING
+### ============================================
+
+### 28. INVALID LOGIN - Wrong Password
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "john@example.com",
+  "password": "wrongPassword"
+}
+
+### 29. INVALID LOGIN - Non-existent Email
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "nonexistent@example.com",
+  "password": "somePassword123"
+}
+
+### 30. REGISTER - Duplicate Email
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "Duplicate User",
+  "email": "john@example.com",
+  "phone": "5551111111",
+  "password": "password123"
+}
+
+### 31. UNAUTHORIZED - Add Pet Without Admin Token
+POST {{baseUrl}}/pets
+Content-Type: application/json
+
+{
+  "name": "Unauthorized Pet",
+  "species": "Dog",
+  "breed": "Labrador"
+}
+
+### 32. UNAUTHORIZED - Add Pet with User Token (Not Admin)
+POST {{baseUrl}}/pets
+Authorization: {{userToken}}
+Content-Type: application/json
+
+{
+  "name": "User Added Pet",
+  "species": "Dog",
+  "breed": "Poodle"
+}
+
+### 33. NOT FOUND - Get Non-existent Pet
+GET {{baseUrl}}/pets/nonexistentid123456
+
+### 34. INVALID ADOPTION - Duplicate Application
+POST {{baseUrl}}/adoptions/apply
+Authorization: {{userToken}}
+Content-Type: application/json
+
+{
+  "petId": "{{petId}}"
+}
+
+### 35. INVALID UPDATE - Missing Required Fields
+PUT {{baseUrl}}/pets/{{petId}}
+Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+  "name": ""
+}
+
+
+### ============================================
+### COMPLETE USER FLOW SCENARIOS
+### ============================================
+
+### SCENARIO 1: New User Registration and Login Flow
+### Step 1: Register new user
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "Sarah Johnson",
+  "email": "sarah@example.com",
+  "phone": "5552223333",
+  "password": "SecurePassword789"
+}
+
+### Step 2: Login with credentials
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "sarah@example.com",
+  "password": "SecurePassword789"
+}
+
+### Step 3: Get profile after login
+GET {{baseUrl}}/auth/profile
+Authorization: {{userToken}}
+
+
+### SCENARIO 2: Browse Pets and Apply for Adoption
+### Step 1: Browse all dogs
+GET {{baseUrl}}/pets?species=Dog&limit=12
+
+### Step 2: Get specific pet details
+GET {{baseUrl}}/pets/{{petId}}
+
+### Step 3: Apply for adoption
+POST {{baseUrl}}/adoptions/apply
+Authorization: {{userToken}}
+Content-Type: application/json
+
+{
+  "petId": "{{petId}}"
+}
+
+### Step 4: Check application status
+GET {{baseUrl}}/adoptions/my-applications
+Authorization: {{userToken}}
+
+
+### SCENARIO 3: Admin Management Flow
+### Step 1: Admin adds new pet
+POST {{baseUrl}}/pets
+Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+  "name": "Luna",
+  "species": "Dog",
+  "breed": "Husky",
+  "age": 2,
+  "gender": "Female",
+  "weight": 28,
+  "color": "Black and White",
+  "image": "https://images.example.com/luna.jpg",
+  "description": "Beautiful husky with striking blue eyes",
+  "traits": ["Energetic", "Friendly", "Loyal"],
+  "health_status": "Healthy",
+  "microchip": "MC444555666",
+  "vaccinated": true,
+  "adopted": false
+}
+
+### Step 2: Admin views all applications
+GET {{baseUrl}}/adoptions/all-applications
+Authorization: {{adminToken}}
+
+### Step 3: Admin approves application
+PUT {{baseUrl}}/adoptions/{{applicationId}}/status
+Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+  "status": "approved"
+}
+
+### Step 4: Admin updates pet to mark as adopted
+PUT {{baseUrl}}/pets/{{petId}}
+Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+  "adopted": true
+}
+
+
+### ============================================
+### ADVANCED FILTERING & SEARCH
+### ============================================
+
+### 36. Search Pets - By Name Pattern
+GET {{baseUrl}}/pets?search=Max&limit=12
+
+### 37. Search Pets - By Breed
+GET {{baseUrl}}/pets?search=Golden&limit=12
+
+### 38. Filter Pets - By Species with Pagination
+GET {{baseUrl}}/pets?species=Cat&page=2&limit=10
+
+### 39. Multi-filter Search - Combining All Filters
+GET {{baseUrl}}/pets?search=Max&species=Dog&page=1&limit=20
+
+### 40. Get All Cats - Paginated
+GET {{baseUrl}}/pets?species=Cat&page=1&limit=5
+
+
+### ============================================
+### BATCH OPERATIONS (for testing)
+### ============================================
+
+### 41. Get Random Pet (First Pet)
+GET {{baseUrl}}/pets?limit=1
+
+### 42. List All Available Pets
+GET {{baseUrl}}/pets?limit=100
+
+### 43. Admin - Get All Pets (for management)
+GET {{baseUrl}}/pets?limit=100
+Authorization: {{adminToken}}
+
+
+### ============================================
+### RESPONSE FORMATS REFERENCE
+### ============================================
+
+### SUCCESS RESPONSES:
+
+### Login Success Response (200 OK)
+# {
+#   "success": true,
+#   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+#   "user": {
+#     "_id": "64c9a345f7db450012345678",
+#     "name": "John Doe",
+#     "email": "john@example.com",
+#     "phone": "5551234567",
+#     "role": "user",
+#     "createdAt": "2024-01-15T10:30:00Z"
+#   }
+# }
+
+### Get Pets Success Response (200 OK)
+# {
+#   "success": true,
+#   "pets": [
+#     {
+#       "_id": "64c9a345f7db450012345670",
+#       "name": "Max",
+#       "species": "Dog",
+#       "breed": "Golden Retriever",
+#       "age": 3,
+#       "gender": "Male",
+#       "weight": 32,
+#       "color": "Golden",
+#       "adopted": false,
+#       "image": "https://images.example.com/max.jpg",
+#       "description": "Friendly dog",
+#       "traits": ["Friendly", "Energetic"],
+#       "vaccinated": true,
+#       "createdAt": "2024-01-10T08:00:00Z"
+#     }
+#   ],
+#   "pagination": {
+#     "currentPage": 1,
+#     "totalPages": 3,
+#     "totalPets": 25,
+#     "limit": 12
+#   }
+# }
+
+### Apply Adoption Success Response (201 Created)
+# {
+#   "success": true,
+#   "application": {
+#     "_id": "64c9a345f7db450012345671",
+#     "userId": "64c9a345f7db450012345679",
+#     "petId": "64c9a345f7db450012345670",
+#     "status": "pending",
+#     "appliedAt": "2024-01-20T14:25:00Z",
+#     "updatedAt": "2024-01-20T14:25:00Z"
+#   }
+# }
+
+### ERROR RESPONSES:
+
+### Unauthorized (401)
+# {
+#   "success": false,
+#   "message": "Unauthorized - Token expired or invalid"
+# }
+
+### Forbidden (403)
+# {
+#   "success": false,
+#   "message": "Forbidden - Only admins can perform this action"
+# }
+
+### Not Found (404)
+# {
+#   "success": false,
+#   "message": "Pet not found"
+# }
+
+### Bad Request (400)
+# {
+#   "success": false,
+#   "message": "Validation error - All fields are required"
+# }
+
+### Server Error (500)
+# {
+#   "success": false,
+#   "message": "Internal server error"
+# }
