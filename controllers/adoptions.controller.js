@@ -105,13 +105,12 @@ const updateAdoptions = async (req, res) => {
     }
 
     const adoption = result.data;
-
     // 🔔 Send Notification (Only if token exists)
-    if (adoption?.user?.fcmToken) {
+    if (adoption?.userId?.fcmToken) {
       await sendNotification({
-        fcmToken: adoption?.user?.fcmToken,
+        fcmToken: adoption?.userId?.fcmToken,
         title: "Adoption Request Updated 🐾",
-        body: `Your adoption request for ${adoption.pet?.name || "Pet"} has been ${adoption?.status || "PENDING"}.`,
+        body: `Your adoption request for ${adoption?.petId?.name || "Pet"} has been ${adoption?.status || "PENDING"}.`,
       });
     }
 

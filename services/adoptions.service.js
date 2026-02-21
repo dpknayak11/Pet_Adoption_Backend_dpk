@@ -39,7 +39,7 @@ const updateAdoptions = async (id, updateData) => {
   try {
     const resData = await Adoptions.findByIdAndUpdate({ _id: id }, updateData, {
       new: true,
-    });
+    }).populate("petId").populate("userId");
     return resData ? { success: true, data: resData } : { success: false };
   } catch (error) {
     console.error("Update Adoptions Error:", error);
