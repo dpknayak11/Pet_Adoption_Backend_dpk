@@ -3,3 +3,5 @@
 .env
 Api.http
 api.txt
+apis.http
+postman_collection.json
